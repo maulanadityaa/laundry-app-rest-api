@@ -10,9 +10,9 @@ type Account struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	RoleID    string    `json:"role_id"`
-	UserID    string    `json:"user_id"`
 
-	User User `gorm:"foreignKey:UserID" json:"user"`
+	Customer Customer `gorm:"foreignKey:AccountID" json:"customer"`
+	Employee Employee `gorm:"foreignKey:AccountID" json:"employee"`
 }
 
 func (c *Account) TableName() string {

@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/google/uuid"
-	"github.com/maulanadityaa/laundry-app-rest-api/entity"
+	"github.com/maulanadityaa/laundry-app-rest-api/model/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -28,7 +28,7 @@ func ConnectDB() {
 		panic("Failed to connect to database")
 	}
 
-	database.AutoMigrate(&entity.Role{}, &entity.User{}, &entity.Account{}, &entity.Product{}, &entity.Transaction{}, &entity.TransactionDetail{})
+	database.AutoMigrate(&entity.Role{}, &entity.Account{}, &entity.Customer{}, &entity.Employee{}, &entity.Product{}, &entity.Transaction{}, &entity.TransactionDetail{})
 
 	DB = database
 

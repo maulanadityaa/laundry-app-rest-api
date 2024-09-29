@@ -4,7 +4,8 @@ import "time"
 
 type Transaction struct {
 	ID         string    `gorm:"primary_key" json:"id"`
-	UserID     string    `json:"user_id"`
+	CustomerID string    `json:"customer_id"`
+	EmployeeID string    `json:"employee_id"`
 	StartTime  time.Time `json:"start_time"`
 	EndTime    time.Time `json:"end_time"`
 	TotalPrice uint      `json:"total_price"`
