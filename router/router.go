@@ -7,4 +7,6 @@ import (
 
 func InitRoutes(route *gin.RouterGroup) {
 	controller.NewAuthController(route)
+	controller.NewCustomerController(route)
+	controller.NewEmployeeController(route)
 }
