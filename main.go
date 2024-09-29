@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/maulanadityaa/laundry-app-rest-api/app"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	app.InitApp()
 }
