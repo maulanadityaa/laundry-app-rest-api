@@ -10,4 +10,5 @@ func InitRoutes(route *gin.RouterGroup) {
 	controller.NewCustomerController(route)
 	controller.NewEmployeeController(route)
 	controller.NewProductController(route)
+	controller.NewTransactionController(route)
 }
