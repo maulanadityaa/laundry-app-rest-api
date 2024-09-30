@@ -7,8 +7,9 @@ type Transaction struct {
 	CustomerID string    `json:"customer_id"`
 	EmployeeID string    `json:"employee_id"`
 	StartTime  time.Time `json:"start_time"`
-	EndTime    time.Time `json:"end_time"`
+	FinishTime time.Time `json:"finish_time"`
 	TotalPrice uint      `json:"total_price"`
+	Status     string    `json:"status"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
 
