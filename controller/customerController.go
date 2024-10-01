@@ -2,6 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/maulanadityaa/laundry-app-rest-api/helper"
+	"github.com/maulanadityaa/laundry-app-rest-api/middleware"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/request"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
 	"github.com/maulanadityaa/laundry-app-rest-api/service"
@@ -15,12 +17,12 @@ var customerService service.CustomerService = impl.NewCustomerService()
 func NewCustomerController(g *gin.RouterGroup) {
 	controller := new(CustomerController)
 
-	customerGroup := g.Group("/customers")
+	customerGroup := g.Group("/customers", helper.ValidateJWT())
 	{
-		customerGroup.GET("/", controller.GetAllCustomer)
-		customerGroup.GET("/:id", controller.GetCustomerByID)
-		customerGroup.PUT("/", controller.UpdateCustomer)
-		customerGroup.GET("/account/:accountID", controller.GetCustomerByAccountID)
+		customerGroup.GET("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.GetAllCustomer)
+		customerGroup.GET("/:id", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.GetCustomerByID)
+		customerGroup.PUT("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.UpdateCustomer)
+		customerGroup.GET("/account/:accountID", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.GetCustomerByAccountID)
 	}
 }
 

@@ -2,6 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/maulanadityaa/laundry-app-rest-api/helper"
+	"github.com/maulanadityaa/laundry-app-rest-api/middleware"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/request"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
 	"github.com/maulanadityaa/laundry-app-rest-api/service"
@@ -15,7 +17,8 @@ var transactionService service.TransactionService = impl.NewTransactionService()
 func NewTransactionController(g *gin.RouterGroup) {
 	controller := new(TransactionController)
 
-	transactionGroup := g.Group("/transactions")
+	transactionGroup := g.Group("/transactions", helper.ValidateJWT())
+	transactionGroup.Use(middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}))
 	{
 		transactionGroup.POST("", controller.AddTransaction)
 		transactionGroup.PUT("", controller.UpdateTransaction)

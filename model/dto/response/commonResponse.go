@@ -71,3 +71,17 @@ func NewResponseError(c *gin.Context, message string) {
 		Message:    message,
 	})
 }
+
+func NewResponseUnauthorized(c *gin.Context, message string) {
+	c.JSON(http.StatusUnauthorized, CommonResponse{
+		StatusCode: http.StatusUnauthorized,
+		Message:    message,
+	})
+}
+
+func NewResponseForbidden(c *gin.Context, message string) {
+	c.JSON(http.StatusForbidden, CommonResponse{
+		StatusCode: http.StatusForbidden,
+		Message:    message,
+	})
+}

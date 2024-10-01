@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/maulanadityaa/laundry-app-rest-api/middleware"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/request"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
 	"github.com/maulanadityaa/laundry-app-rest-api/service"
@@ -17,9 +18,9 @@ func NewProductController(g *gin.RouterGroup) {
 
 	productGroup := g.Group("/products")
 	{
-		productGroup.POST("/", controller.AddProduct)
-		productGroup.PUT("/", controller.UpdateProduct)
-		productGroup.DELETE("/:id", controller.DeleteProduct)
+		productGroup.POST("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.AddProduct)
+		productGroup.PUT("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.UpdateProduct)
+		productGroup.DELETE("/:id", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.DeleteProduct)
 		productGroup.GET("/", controller.GetAllProduct)
 		productGroup.GET("/:id", controller.GetProductByID)
 	}

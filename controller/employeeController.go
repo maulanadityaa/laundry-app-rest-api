@@ -2,6 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/maulanadityaa/laundry-app-rest-api/helper"
+	"github.com/maulanadityaa/laundry-app-rest-api/middleware"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/request"
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
 	"github.com/maulanadityaa/laundry-app-rest-api/service"
@@ -15,7 +17,8 @@ var employeeService service.EmployeeService = impl.NewEmployeeService()
 func NewEmployeeController(g *gin.RouterGroup) {
 	controller := new(EmployeeController)
 
-	employeeGroup := g.Group("/employees")
+	employeeGroup := g.Group("/employees", helper.ValidateJWT())
+	employeeGroup.Use(middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}))
 	{
 		employeeGroup.GET("/", controller.GetAllEmployee)
 		employeeGroup.GET("/:id", controller.GetEmployeeByID)
