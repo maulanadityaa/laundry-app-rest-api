@@ -47,7 +47,7 @@ func (AuthService) Register(req request.RegisterRequest) (response.RegisterRespo
 	newUserRequest := request.UserRequest{
 		Name:        req.Name,
 		Address:     req.Address,
-		PhoneNumber: req.PhoneNumber,
+		PhoneNumber: helper.FormatPhoneNumber(req.PhoneNumber),
 		AccountID:   account.ID,
 	}
 

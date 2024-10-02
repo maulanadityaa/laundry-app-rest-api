@@ -85,3 +85,11 @@ func NewResponseForbidden(c *gin.Context, message string) {
 		Message:    message,
 	})
 }
+
+func NewResponseValidationError(c *gin.Context, errors map[string]string) {
+	c.JSON(http.StatusBadRequest, CommonResponse{
+		StatusCode: http.StatusBadRequest,
+		Message:    "Validation Error",
+		Data:       errors,
+	})
+}

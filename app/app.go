@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/maulanadityaa/laundry-app-rest-api/config"
 	"github.com/maulanadityaa/laundry-app-rest-api/router"
+	"github.com/maulanadityaa/laundry-app-rest-api/validator"
 )
 
 func initDomainModule(r *gin.Engine) {
@@ -30,6 +31,8 @@ func InitApp() {
 
 	config.LoadConfig()
 	config.ConnectDB()
+
+	validator.InitValidator()
 
 	initDomainModule(r)
 

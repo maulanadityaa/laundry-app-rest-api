@@ -6,6 +6,7 @@ import (
 	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
 	"github.com/maulanadityaa/laundry-app-rest-api/service"
 	"github.com/maulanadityaa/laundry-app-rest-api/service/impl"
+	"github.com/maulanadityaa/laundry-app-rest-api/validator"
 )
 
 type AuthController struct{}
@@ -30,6 +31,12 @@ func (AuthController) Login(c *gin.Context) {
 		return
 	}
 
+	errors := validator.ValidateStruct(request)
+	if errors != nil {
+		response.NewResponseValidationError(c, errors)
+		return
+	}
+
 	result, err := authService.Login(request)
 	if err != nil {
 		response.NewResponseError(c, err.Error())
@@ -44,6 +51,12 @@ func (AuthController) Register(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&request); err != nil {
 		response.NewResponseBadRequest(c, err.Error())
+		return
+	}
+
+	errors := validator.ValidateStruct(request)
+	if errors != nil {
+		response.NewResponseValidationError(c, errors)
 		return
 	}
 
