@@ -23,6 +23,15 @@ func NewAuthController(g *gin.RouterGroup) {
 	}
 }
 
+// Login handles user login
+// @Summary User Login
+// @Description Authenticate a user and return a JWT token
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body request.LoginRequest true "Login Request Body"
+// @Success 200 {object} response.LoginResponse
+// @Router /api/v1/auth/login [post]
 func (AuthController) Login(c *gin.Context) {
 	var request request.LoginRequest
 
@@ -46,6 +55,15 @@ func (AuthController) Login(c *gin.Context) {
 	response.NewResponseOK(c, result)
 }
 
+// Register handles user registration
+// @Summary User Registration
+// @Description Register a new customer or employee
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body request.RegisterRequest true "Registration Request Body"
+// @Success 201 {object} response.RegisterResponse
+// @Router /api/v1/auth/register [post]
 func (AuthController) Register(c *gin.Context) {
 	var request request.RegisterRequest
 

@@ -1,0 +1,379 @@
+definitions:
+  request.LoginRequest:
+    properties:
+      email:
+        example: johndoe@example.com
+        type: string
+      password:
+        example: "12345678"
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.RegisterRequest:
+    properties:
+      address:
+        example: Jl. Address No. 1
+        type: string
+      email:
+        example: johndoe@example.com
+        type: string
+      name:
+        example: John Doe
+        type: string
+      password:
+        example: "12345678"
+        type: string
+      phoneNumber:
+        example: "081234567890"
+        type: string
+      role:
+        enum:
+        - ROLE_CUSTOMER
+        - ROLE_EMPLOYEE
+        example: ROLE_CUSTOMER
+        type: string
+    required:
+    - address
+    - email
+    - name
+    - password
+    - phoneNumber
+    - role
+    type: object
+  request.UserUpdateRequest:
+    properties:
+      address:
+        example: Jl. Address No. 1
+        type: string
+      id:
+        example: ValidUUIDv4
+        type: string
+      name:
+        example: John Doe
+        type: string
+      phoneNumber:
+        example: "081234567890"
+        type: string
+    required:
+    - address
+    - id
+    - name
+    - phoneNumber
+    type: object
+  response.LoginResponse:
+    properties:
+      token:
+        example: ValidJWTToken
+        type: string
+    type: object
+  response.RegisterResponse:
+    properties:
+      email:
+        example: johndoe@example.com
+        type: string
+      id:
+        example: ValidUUIDv4
+        type: string
+      role:
+        $ref: '#/definitions/response.RoleResponse'
+      user:
+        $ref: '#/definitions/response.UserResponse'
+    type: object
+  response.RoleResponse:
+    properties:
+      id:
+        example: ValidUUIDv4
+        type: string
+      name:
+        example: ROLE_CUSTOMER
+        type: string
+    type: object
+  response.UserResponse:
+    properties:
+      address:
+        example: Jl. Address No. 1
+        type: string
+      createdAt:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      id:
+        example: ValidUUIDv4
+        type: string
+      name:
+        example: John Doe
+        type: string
+      phoneNumber:
+        example: "081234567890"
+        type: string
+      updatedAt:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+    type: object
+info:
+  contact:
+    email: maulanadityaaa@gmail.com
+    name: maulanadityaa
+    url: https://github.com/maulanadityaa
+  description: This is a REST API application for laundry app
+  title: Laundry App REST API
+  version: "1.0"
+paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user and return a JWT token
+      parameters:
+      - description: Login Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.LoginResponse'
+      summary: User Login
+      tags:
+      - Authentication
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new customer or employee
+      parameters:
+      - description: Registration Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.RegisterResponse'
+      summary: User Registration
+      tags:
+      - Authentication
+  /api/v1/customers:
+    get:
+      consumes:
+      - application/json
+      description: Get all customers with pagination only for employees
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Rows Per Page
+        in: query
+        name: rowsPerPage
+        type: integer
+      - description: Name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.UserResponse'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get All Customers
+      tags:
+      - Customers
+    put:
+      consumes:
+      - application/json
+      description: Update a customer only for employees and the customer itself
+      parameters:
+      - description: User Update Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Customer
+      tags:
+      - Customers
+  /api/v1/customers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a customer by ID only for employees and the customer itself
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Customer By ID
+      tags:
+      - Customers
+  /api/v1/customers/account/{accountID}:
+    get:
+      consumes:
+      - application/json
+      description: Get a customer by account ID only for employees and the customer
+        itself
+      parameters:
+      - description: Account ID
+        in: path
+        name: accountID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Customer By Account ID
+      tags:
+      - Customers
+  /api/v1/employees:
+    get:
+      consumes:
+      - application/json
+      description: Get all employees with pagination only for employees
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Rows Per Page
+        in: query
+        name: rowsPerPage
+        type: integer
+      - description: Name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.UserResponse'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get All Employees
+      tags:
+      - Employees
+    put:
+      consumes:
+      - application/json
+      description: Update an employee only for employees
+      parameters:
+      - description: User Update Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Employee
+      tags:
+      - Employees
+  /api/v1/employees/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get an employee by ID only for employees
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Employee By ID
+      tags:
+      - Employees
+  /api/v1/employees/account/{accountID}:
+    get:
+      consumes:
+      - application/json
+      description: Get an employee by account ID only for employees
+      parameters:
+      - description: Account ID
+        in: path
+        name: accountID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Employee By Account ID
+      tags:
+      - Employees
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and your token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

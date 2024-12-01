@@ -19,7 +19,7 @@ func initDomainModule(r *gin.Engine) {
 	router.InitRoutes(v1Group)
 }
 
-func InitApp() {
+func InitApp() *gin.Engine {
 	r := gin.Default()
 
 	location, err := time.LoadLocation("Asia/Jakarta")
@@ -40,4 +40,6 @@ func InitApp() {
 	if err := r.Run(*addr); err != nil {
 		fmt.Println(err.Error())
 	}
+
+	return r
 }

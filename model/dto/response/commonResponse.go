@@ -21,7 +21,7 @@ type (
 	}
 
 	CommonResponseWithPaging struct {
-		StatusCode int         `json:"statusCode"`
+		StatusCode int         `json:"statusCode" example:"200"`
 		Message    string      `json:"message"`
 		Data       interface{} `json:"data"`
 		Paging     Paging      `json:"paging"`

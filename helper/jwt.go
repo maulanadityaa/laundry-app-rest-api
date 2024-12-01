@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -16,12 +17,19 @@ var (
 	jwtSignatureKey []byte = []byte(jwtSecret)
 )
 
+type Claims struct {
+	AccountId string `json:"accountId"`
+	Role      string `json:"role"`
+	Email     string `json:"email"`
+	jwt.RegisteredClaims
+}
+
 func GenerateJWT(accountId, role, email string) (string, error) {
-	claims := jwt.MapClaims{
-		"accountId": accountId,
-		"role":      role,
-		"email":     email,
-		"standardClaims": jwt.RegisteredClaims{
+	claims := Claims{
+		AccountId: accountId,
+		Role:      role,
+		Email:     email,
+		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    appName,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 6)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -54,6 +62,7 @@ func ValidateJWT() gin.HandlerFunc {
 		}
 
 		tokenString = parts[1]
+		fmt.Println(tokenString)
 
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -65,6 +74,7 @@ func ValidateJWT() gin.HandlerFunc {
 
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			fmt.Println(err.Error())
 			c.Abort()
 			return
 		}
