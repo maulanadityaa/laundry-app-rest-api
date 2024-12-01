@@ -10,7 +10,7 @@ import (
 func LoadConfig() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file", err.Error())
+		log.Fatal(err.Error())
 	}
 
 	// Access environment variables
