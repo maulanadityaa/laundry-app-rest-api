@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/request"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
+	"maulanadityaa/laundry-app-rest-api/model/dto/request"
+	"maulanadityaa/laundry-app-rest-api/model/dto/response"
 )
 
 type EmployeeService interface {

@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"maulanadityaa/laundry-app-rest-api/model/entity"
+
 	"github.com/google/uuid"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

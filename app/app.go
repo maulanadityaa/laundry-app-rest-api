@@ -6,10 +6,11 @@ import (
 	"os"
 	"time"
 
+	"maulanadityaa/laundry-app-rest-api/config"
+	"maulanadityaa/laundry-app-rest-api/router"
+	"maulanadityaa/laundry-app-rest-api/validator"
+
 	"github.com/gin-gonic/gin"
-	"github.com/maulanadityaa/laundry-app-rest-api/config"
-	"github.com/maulanadityaa/laundry-app-rest-api/router"
-	"github.com/maulanadityaa/laundry-app-rest-api/validator"
 )
 
 func initDomainModule(r *gin.Engine) {

@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/maulanadityaa/laundry-app-rest-api/model/entity"
+	"maulanadityaa/laundry-app-rest-api/model/entity"
+
 	"gorm.io/gorm"
 )
 

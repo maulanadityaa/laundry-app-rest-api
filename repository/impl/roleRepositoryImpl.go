@@ -1,8 +1,8 @@
 package impl
 
 import (
-	"github.com/maulanadityaa/laundry-app-rest-api/config"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/entity"
+	"maulanadityaa/laundry-app-rest-api/config"
+	"maulanadityaa/laundry-app-rest-api/model/entity"
 )
 
 type RoleRepository struct{}

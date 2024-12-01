@@ -1,8 +1,9 @@
 package router
 
 import (
+	"maulanadityaa/laundry-app-rest-api/controller"
+
 	"github.com/gin-gonic/gin"
-	"github.com/maulanadityaa/laundry-app-rest-api/controller"
 )
 
 func InitRoutes(route *gin.RouterGroup) {

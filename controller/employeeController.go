@@ -1,14 +1,15 @@
 package controller
 
 import (
+	"maulanadityaa/laundry-app-rest-api/helper"
+	"maulanadityaa/laundry-app-rest-api/middleware"
+	"maulanadityaa/laundry-app-rest-api/model/dto/request"
+	"maulanadityaa/laundry-app-rest-api/model/dto/response"
+	"maulanadityaa/laundry-app-rest-api/service"
+	"maulanadityaa/laundry-app-rest-api/service/impl"
+	"maulanadityaa/laundry-app-rest-api/validator"
+
 	"github.com/gin-gonic/gin"
-	"github.com/maulanadityaa/laundry-app-rest-api/helper"
-	"github.com/maulanadityaa/laundry-app-rest-api/middleware"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/request"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
-	"github.com/maulanadityaa/laundry-app-rest-api/service"
-	"github.com/maulanadityaa/laundry-app-rest-api/service/impl"
-	"github.com/maulanadityaa/laundry-app-rest-api/validator"
 )
 
 type EmployeeController struct{}

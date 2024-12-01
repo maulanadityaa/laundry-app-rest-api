@@ -1,9 +1,10 @@
 package middleware
 
 import (
+	"maulanadityaa/laundry-app-rest-api/helper"
+	"maulanadityaa/laundry-app-rest-api/model/dto/response"
+
 	"github.com/gin-gonic/gin"
-	"github.com/maulanadityaa/laundry-app-rest-api/helper"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/dto/response"
 )
 
 func AuthWithRole(role []string) gin.HandlerFunc {

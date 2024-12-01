@@ -3,10 +3,11 @@ package validator
 import (
 	"regexp"
 
+	"maulanadityaa/laundry-app-rest-api/config"
+	"maulanadityaa/laundry-app-rest-api/helper"
+	"maulanadityaa/laundry-app-rest-api/model/entity"
+
 	"github.com/go-playground/validator/v10"
-	"github.com/maulanadityaa/laundry-app-rest-api/config"
-	"github.com/maulanadityaa/laundry-app-rest-api/helper"
-	"github.com/maulanadityaa/laundry-app-rest-api/model/entity"
 )
 
 func UniqueEmail(fl validator.FieldLevel) bool {
