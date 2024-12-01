@@ -5,5 +5,10 @@
       "source": "/api(.*)",
       "destination": "/api/entrypoint.go"
     }
-  ]
+  ],
+  "functions": {
+    "api/*.go": {
+      "maxDuration": 60
+    }
+  }
 }
