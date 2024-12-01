@@ -3,6 +3,7 @@ package app
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -41,6 +42,7 @@ func InitApp() *gin.Engine {
 	if err := r.Run(*addr); err != nil {
 		fmt.Println(err.Error())
 	}
+	log.Printf("Server is running on %s", os.Getenv("PORT"))
 
 	return r
 }
