@@ -28,6 +28,7 @@ func InitApp() *gin.Engine {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	log.Printf("Location: %s", location.String())
 
 	time.Local = location
 
