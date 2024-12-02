@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -16,44 +15,35 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() {
-	// Add verbose logging
-	log.Println("Starting database connection...")
+	// Extremely lightweight connection with minimal resources
+	log.Println("Initializing database connection...")
 	startTime := time.Now()
 
-	// Collect and log environment variables
-	dbHost := os.Getenv("DB_HOST")
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-	dbPort := os.Getenv("DB_PORT")
-
-	// Log environment variable lengths for debugging
-	log.Printf("DB Connection Details - Host: %s, User: %s, Name: %s, Port: %s",
-		maskString(dbHost),
-		maskString(dbUser),
-		dbName,
-		dbPort)
-
-	// Create DSN with detailed logging
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
-		dbHost, dbUser, dbPassword, dbName, dbPort,
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PORT"),
 	)
 
-	// Use context with timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	// Configure GORM with more detailed settings
+	// Ultra-conservative GORM configuration
 	config := &gorm.Config{
-		// Add more robust error handling
-		Logger: logger.Default.LogMode(logger.Info),
+		// Disable unnecessary features
+		SkipDefaultTransaction: true,
 
-		// Prevent N+1 queries
-		PrepareStmt: true,
+		// Minimal logging
+		Logger: logger.Default.LogMode(logger.Silent),
+
+		// Prevent N+1 query issues
+		PrepareStmt: false,
 	}
 
-	// Attempt connection with context
+	// Use context with very short timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
 	database, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true,
@@ -61,42 +51,33 @@ func ConnectDB() {
 
 	if err != nil {
 		log.Printf("Database connection error: %v", err)
-		log.Printf("Connection attempt duration: %v", time.Since(startTime))
 		panic(fmt.Sprintf("Failed to connect to database: %v", err))
 	}
 
-	// Get underlying SQL DB for connection pool management
+	// Get underlying SQL DB with minimal connection pool
 	sqlDB, err := database.DB()
 	if err != nil {
 		log.Printf("Failed to get database connection: %v", err)
 		panic(fmt.Sprintf("Failed to get database connection: %v", err))
 	}
 
-	// Aggressive connection pool management
-	sqlDB.SetMaxIdleConns(5)
-	sqlDB.SetMaxOpenConns(20)
-	sqlDB.SetConnMaxLifetime(10 * time.Minute)
+	// Ultra-conservative connection pool for Hobby plan
+	sqlDB.SetMaxIdleConns(2)                  // Minimum idle connections
+	sqlDB.SetMaxOpenConns(5)                  // Low max open connections
+	sqlDB.SetConnMaxLifetime(3 * time.Minute) // Shorter connection lifetime
 
-	// Ping database with context to verify connection
-	sqlDBCtx, sqlCancel := context.WithTimeout(ctx, 10*time.Second)
-	defer sqlCancel()
+	// Quick ping with very short timeout
+	pingCtx, pingCancel := context.WithTimeout(ctx, 5*time.Second)
+	defer pingCancel()
 
-	if err := sqlDB.PingContext(sqlDBCtx); err != nil {
+	if err := sqlDB.PingContext(pingCtx); err != nil {
 		log.Printf("Database ping error: %v", err)
 		panic(fmt.Sprintf("Failed to ping database: %v", err))
 	}
 
 	DB = database
 
-	log.Printf("Database connection successful. Total connection time: %v", time.Since(startTime))
-}
-
-// Helper function to mask sensitive strings
-func maskString(s string) string {
-	if len(s) > 4 {
-		return s[:2] + strings.Repeat("*", len(s)-4) + s[len(s)-2:]
-	}
-	return strings.Repeat("*", len(s))
+	log.Printf("Database connection completed in %v", time.Since(startTime))
 }
 
 // func initRole() {
