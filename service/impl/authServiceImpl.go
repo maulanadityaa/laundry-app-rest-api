@@ -2,6 +2,7 @@ package impl
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"maulanadityaa/laundry-app-rest-api/helper"
@@ -29,6 +30,7 @@ func NewAuthService() *AuthService {
 func (AuthService) Register(req request.RegisterRequest) (response.RegisterResponse, error) {
 	role, _ := roleRepository.GetRoleByName(req.Role)
 	hashedPassword, _ := helper.HashPassword(req.Password)
+	fmt.Println(role)
 
 	newAccount := entity.Account{
 		ID:        uuid.NewString(),

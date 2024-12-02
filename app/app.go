@@ -23,6 +23,7 @@ func initDomainModule(r *gin.Engine) {
 
 func InitApp() *gin.Engine {
 	r := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
 
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {

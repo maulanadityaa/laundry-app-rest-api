@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"time"
 
 	"maulanadityaa/laundry-app-rest-api/model/entity"
 
@@ -23,13 +24,27 @@ func ConnectDB() {
 		os.Getenv("DB_NAME"),
 		os.Getenv("DB_PORT"),
 	)
-	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	database, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database")
 	}
 
-	database.AutoMigrate(&entity.Role{}, &entity.Account{}, &entity.Customer{}, &entity.Employee{}, &entity.Product{}, &entity.Transaction{}, &entity.TransactionDetail{})
+	err = database.AutoMigrate(&entity.Role{}, &entity.Account{}, &entity.Customer{}, &entity.Employee{}, &entity.Product{}, &entity.Transaction{}, &entity.TransactionDetail{})
+	if err != nil {
+		panic("Failed to migrate database")
+	}
+
+	sqlDB, err := database.DB()
+	if err != nil {
+		panic("Failed to get database connection")
+	}
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	DB = database
 
