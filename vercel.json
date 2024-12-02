@@ -8,8 +8,7 @@
   ],
   "functions": {
     "api/*.go": {
-      "maxDuration": 60,
-      "runtime": "go@1.22.3"
+      "maxDuration": 60
     }
   }
 }
