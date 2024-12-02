@@ -77,7 +77,7 @@ func ConnectDB() {
 
 	DB = database
 
-	log.Printf("Database connection completed in %v", time.Since(startTime))
+	log.Printf("Database connection already completed in %v", time.Since(startTime))
 }
 
 // func initRole() {
