@@ -1,14 +1,10 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"time"
 
-	"maulanadityaa/laundry-app-rest-api/model/entity"
-
-	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -33,10 +29,10 @@ func ConnectDB() {
 		panic("Failed to connect to database")
 	}
 
-	err = database.AutoMigrate(&entity.Role{}, &entity.Account{}, &entity.Customer{}, &entity.Employee{}, &entity.Product{}, &entity.Transaction{}, &entity.TransactionDetail{})
-	if err != nil {
-		panic("Failed to migrate database")
-	}
+	// err = database.AutoMigrate(&entity.Role{}, &entity.Account{}, &entity.Customer{}, &entity.Employee{}, &entity.Product{}, &entity.Transaction{}, &entity.TransactionDetail{})
+	// if err != nil {
+	// 	panic("Failed to migrate database")
+	// }
 
 	sqlDB, err := database.DB()
 	if err != nil {
@@ -48,33 +44,33 @@ func ConnectDB() {
 
 	DB = database
 
-	initRole()
+	// initRole()
 }
 
-func initRole() {
-	roles := []entity.Role{
-		{
-			ID:   uuid.NewString(),
-			Name: "ROLE_EMPLOYEE",
-		},
-		{
-			ID:   uuid.NewString(),
-			Name: "ROLE_CUSTOMER",
-		},
-	}
+// func initRole() {
+// 	roles := []entity.Role{
+// 		{
+// 			ID:   uuid.NewString(),
+// 			Name: "ROLE_EMPLOYEE",
+// 		},
+// 		{
+// 			ID:   uuid.NewString(),
+// 			Name: "ROLE_CUSTOMER",
+// 		},
+// 	}
 
-	for _, role := range roles {
-		var roleExist entity.Role
+// 	for _, role := range roles {
+// 		var roleExist entity.Role
 
-		result := DB.Where("name = ?", role.Name).First(&roleExist).Debug()
-		if result.Error != nil {
-			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-				DB.Create(&role)
-			} else {
-				fmt.Println(result.Error)
-			}
-		} else {
-			fmt.Println("Role already exist")
-		}
-	}
-}
+// 		result := DB.Where("name = ?", role.Name).First(&roleExist).Debug()
+// 		if result.Error != nil {
+// 			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+// 				DB.Create(&role)
+// 			} else {
+// 				fmt.Println(result.Error)
+// 			}
+// 		} else {
+// 			fmt.Println("Role already exist")
+// 		}
+// 	}
+// }
