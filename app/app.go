@@ -23,7 +23,7 @@ func initDomainModule(r *gin.Engine) {
 
 func InitApp() *gin.Engine {
 	r := gin.Default()
-	gin.SetMode(gin.ReleaseMode)
+	// gin.SetMode(gin.ReleaseMode)
 
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
@@ -33,10 +33,11 @@ func InitApp() *gin.Engine {
 
 	time.Local = location
 
-	config.LoadConfig()
-	config.ConnectDB()
-
-	validator.InitValidator()
+	go func() {
+		config.LoadConfig()
+		config.ConnectDB()
+		validator.InitValidator()
+	}()
 
 	initDomainModule(r)
 
