@@ -186,7 +186,7 @@ Authorization: Bearer <jwt_token>
 ## 📘 Swagger Docs
 
 Swagger UI is available at:
-📄 `/swagger/index.html`
+📄 [`/swagger/docs`](https://laundry-app-rest-api.vercel.app/swagger/docs/index.html)
 
 To generate docs:
 
