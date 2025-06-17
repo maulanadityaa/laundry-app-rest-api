@@ -22,9 +22,9 @@ func NewEmployeeController(g *gin.RouterGroup) {
 	employeeGroup := g.Group("/employees", helper.ValidateJWT())
 	employeeGroup.Use(middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}))
 	{
-		employeeGroup.GET("/", controller.GetAllEmployee)
+		employeeGroup.GET("", controller.GetAllEmployee)
 		employeeGroup.GET("/:id", controller.GetEmployeeByID)
-		employeeGroup.PUT("/", controller.UpdateEmployee)
+		employeeGroup.PUT("", controller.UpdateEmployee)
 		employeeGroup.GET("/account/:accountID", controller.GetEmployeeByAccountID)
 	}
 }

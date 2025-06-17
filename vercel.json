@@ -2,14 +2,14 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/api(.*)",
-      "destination": "/api/entrypoint.go"
+      "source": "/(.*)",
+      "destination": "/api/handler.go"
     }
   ],
   "functions": {
     "api/*.go": {
       "maxDuration": 60,
-      "memory": 3000
+      "memory": 1024
     }
   }
 }

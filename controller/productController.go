@@ -20,10 +20,10 @@ func NewProductController(g *gin.RouterGroup) {
 
 	productGroup := g.Group("/products")
 	{
-		productGroup.POST("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.AddProduct).Use(helper.ValidateJWT())
-		productGroup.PUT("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.UpdateProduct).Use(helper.ValidateJWT())
+		productGroup.POST("", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.AddProduct).Use(helper.ValidateJWT())
+		productGroup.PUT("", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.UpdateProduct).Use(helper.ValidateJWT())
 		productGroup.DELETE("/:id", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.DeleteProduct).Use(helper.ValidateJWT())
-		productGroup.GET("/", controller.GetAllProduct)
+		productGroup.GET("", controller.GetAllProduct)
 		productGroup.GET("/:id", controller.GetProductByID)
 	}
 }

@@ -12,5 +12,9 @@ func InitRoutes(route *gin.RouterGroup) {
 	controller.NewEmployeeController(route)
 	controller.NewProductController(route)
 	controller.NewTransactionController(route)
+
+}
+
+func InitSwaggerRoutes(route *gin.Engine) {
 	controller.NewSwaggerController(route)
 }

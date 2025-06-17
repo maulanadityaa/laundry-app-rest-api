@@ -10,20 +10,15 @@ import (
 
 type SwaggerController struct{}
 
-func NewSwaggerController(route *gin.RouterGroup) {
+func NewSwaggerController(route *gin.Engine) {
 	swaggerGroup := route.Group("/swagger")
 	{
-		swaggerGroup.GET("/docs/*any", func(c *gin.Context) {
-			path := c.Param("any")
-			if path == "/" || path == "" {
-				// Redirect /docs/ or /docs to index.html
-				c.Redirect(301, "/api/v1/swagger/docs/index.html")
-				return
-			}
-
-			// Otherwise, serve Swagger
-			ginSwagger.WrapHandler(swaggerFiles.Handler)(c)
+		// Redirect /swagger/docs → /swagger/docs/index.html
+		swaggerGroup.GET("/docs", func(c *gin.Context) {
+			c.Redirect(302, "/api/v1/swagger/docs/index.html")
 		})
 
+		// Serve Swagger UI
+		swaggerGroup.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 }

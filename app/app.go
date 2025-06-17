@@ -19,7 +19,9 @@ func initDomainModule(r *gin.Engine) {
 }
 
 func InitApp() *gin.Engine {
-	r := gin.Default()
+	r := gin.New()
+	r.RedirectTrailingSlash = false
+	r.Use(gin.Recovery(), gin.Logger())
 
 	// Set time zone
 	location, err := time.LoadLocation("Asia/Jakarta")
@@ -36,6 +38,8 @@ func InitApp() *gin.Engine {
 
 	// Register routes/modules
 	initDomainModule(r)
+	// Initialize Swagger routes
+	router.InitSwaggerRoutes(r)
 
 	return r
 }

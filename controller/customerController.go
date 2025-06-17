@@ -21,9 +21,9 @@ func NewCustomerController(g *gin.RouterGroup) {
 
 	customerGroup := g.Group("/customers", helper.ValidateJWT())
 	{
-		customerGroup.GET("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.GetAllCustomer)
+		customerGroup.GET("", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE"}), controller.GetAllCustomer)
 		customerGroup.GET("/:id", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.GetCustomerByID)
-		customerGroup.PUT("/", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.UpdateCustomer)
+		customerGroup.PUT("", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.UpdateCustomer)
 		customerGroup.GET("/account/:accountID", middleware.AuthWithRole([]string{"ROLE_EMPLOYEE", "ROLE_CUSTOMER"}), controller.GetCustomerByAccountID)
 	}
 }
