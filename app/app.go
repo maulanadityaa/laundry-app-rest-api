@@ -1,10 +1,7 @@
 package app
 
 import (
-	"flag"
-	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"maulanadityaa/laundry-app-rest-api/config"
@@ -23,29 +20,22 @@ func initDomainModule(r *gin.Engine) {
 
 func InitApp() *gin.Engine {
 	r := gin.Default()
-	// gin.SetMode(gin.ReleaseMode)
 
+	// Set time zone
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatal("Failed to load location:", err)
 	}
-	log.Printf("Location: %s", location.String())
-
 	time.Local = location
+	log.Printf("Timezone set to: %s", location.String())
 
-	go func() {
-		config.LoadConfig()
-		config.ConnectDB()
-		validator.InitValidator()
-	}()
+	// Load essential components (not in goroutine)
+	config.LoadConfig()
+	config.ConnectDB()
+	validator.InitValidator()
 
+	// Register routes/modules
 	initDomainModule(r)
-
-	addr := flag.String("port", ":"+os.Getenv("PORT"), "Address to listen and serve")
-	if err := r.Run(*addr); err != nil {
-		fmt.Println(err.Error())
-	}
-	log.Printf("Server is running on %s", os.Getenv("PORT"))
 
 	return r
 }

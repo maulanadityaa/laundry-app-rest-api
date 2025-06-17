@@ -13,6 +13,17 @@ type SwaggerController struct{}
 func NewSwaggerController(route *gin.RouterGroup) {
 	swaggerGroup := route.Group("/swagger")
 	{
-		swaggerGroup.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
+		swaggerGroup.GET("/docs/*any", func(c *gin.Context) {
+			path := c.Param("any")
+			if path == "/" || path == "" {
+				// Redirect /docs/ or /docs to index.html
+				c.Redirect(301, "/api/v1/swagger/docs/index.html")
+				return
+			}
+
+			// Otherwise, serve Swagger
+			ginSwagger.WrapHandler(swaggerFiles.Handler)(c)
+		})
+
 	}
 }
